@@ -1,4 +1,4 @@
-package nurse.scheduling;
+package Besliskunde;
 
 import java.io.IOException;
 import java.util.ArrayList;

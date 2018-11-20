@@ -1,4 +1,4 @@
-package nurse.scheduling;
+package Besliskunde;
 
 import java.util.ArrayList;
 import java.util.Collections;

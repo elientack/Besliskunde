@@ -1,9 +1,10 @@
-package nurse.scheduling;
+package Besliskunde;
 
 /**
  *
  * @author Sandra
  */
+
 public class MonthlyRosterRules {
 
     private int[] data;

@@ -1,7 +1,7 @@
-package nurse.scheduling;
+package Besliskunde;
 
 import java.util.ArrayList;
-import static nurse.scheduling.NurseScheduling.NBR_DAYS_IN_MONTH;
+import static Besliskunde.NurseScheduling.NBR_DAYS_IN_MONTH;
 
 /**
  *

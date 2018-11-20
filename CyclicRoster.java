@@ -1,9 +1,5 @@
-package nurse.scheduling;
+package Besliskunde;
 
-/**
- *
- * @author Sandra
- */
 public class CyclicRoster {
 
     private int nbrType1;

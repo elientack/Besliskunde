@@ -1,4 +1,4 @@
-package nurse.scheduling;
+package Besliskunde;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
