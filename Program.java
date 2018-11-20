@@ -38,7 +38,7 @@ public class Program {
     public static int[] FAIRNESS_COST_SAME_SHIFTS = {Integer.MAX_VALUE, Integer.MIN_VALUE};
     public static double[] REAL_COST_SAME_SHIFTS = {Double.MAX_VALUE, Double.MIN_VALUE};
 
-    static boolean normalizationLoop;
+  
 
     static final int CASE_D = 0;
     static final int DIFF_SHIFTS = 1;
