@@ -18,7 +18,7 @@ public class NurseScheduling {
     public static final int NBR_DAYS_IN_WEEK = 7;
     public static final int NBR_DEP = 4;
     public static final int NBR_PREFERENCE_SHIFTS = 5; //needed when creating a new nurse her preferences
-    public static final int NBR_RANDOMRUNS = 20000; //for finding a start schedule (see method)
+    public static final int NBR_RANDOMRUNS = 20; //for finding a start schedule (see method)
     public static final int NBR_SCHEDULES_SAVED = 5; //how many start schedules will we save
 
     private static Scenario scenario;
@@ -143,7 +143,7 @@ public class NurseScheduling {
             costs[Program.MAX] = cost;
         }
     }
-
+//ZELFDE METHODE MAAR MET DOUBLE IPV INT 
     private void adaptMinMax(double cost, double[] costs) {
         if (cost < costs[Program.MIN]) {
             costs[Program.MIN] = cost;
@@ -441,13 +441,14 @@ public class NurseScheduling {
         }
 
         ArrayList<Nurse> setOfNursesUsed = new ArrayList<>();
-        //Nurse[] nursesForSchedule = null;
+        
         Nurse newNurse;
 
         int totalAssignmentsAvailable = 0; //default
         int totalAssignmentsNeeded = nbrNursesNeeded * Nurse.NBR_ASSIGMENTS_FTE;
 
         try {
+            //Zo er rekening mee houden dat er parttime nurses zijn 
             for (Nurse nurse : nursesAvailable) {
                 totalAssignmentsAvailable += nurse.getAssignments();
             }
@@ -625,9 +626,9 @@ public class NurseScheduling {
     private void randomAllocationDifferentShifts(ArrayList<Nurse> nurses) {
         for (int i = 0; i < nurses.size(); i++) {
             nurses.get(i).setPersonalSchedule(calculatePersonalSchedule_differentShifts(nurses.get(i)));//give whole row with shifts to work to the nurse
-            if (nurses.get(i).getPreferenceCost() == 0) {
-                System.out.println("In randomAllocationDifferentShifts");
-            }
+           // if (nurses.get(i).getPreferenceCost() == 0) {
+             //   System.out.println("In randomAllocationDifferentShifts");
+            //}
         }
     }
 
@@ -1100,256 +1101,8 @@ public class NurseScheduling {
         return randomIndex;
     }
 
-    //    private int[] calculatePersonalSchedule_differentShifts(Nurse nurse) {
-//        int[] schedule = new int[NBR_DAYS_IN_MONTH];
-//        int randomPattern;
-//        double employmentRate = nurse.getEmploymentRate();
-//        boolean identicalWeekend = scenario.isIdentical(); //last 2 patterns non-identical
-//
-//        if (!identicalWeekend) { //choose out of all 7 patterns
-//            randomPattern = (int) (Math.random() * patterns.length);
-//            for (int i = 0; i < NBR_DAYS_IN_MONTH / NBR_DAYS_IN_WEEK; i++) {//4 weeks
-//                for (int j = 0; j < NBR_DAYS_IN_WEEK; j++) {
-//                    schedule[(i * NBR_DAYS_IN_WEEK) + j] = patterns[randomPattern][j];
-//                }
-//            }
-//        } else { //choose out of the first 5 patterns
-//            randomPattern = (int) (Math.random() * (patterns.length - 2)); //without the last two who are non-identical
-//            for (int i = 0; i < NBR_DAYS_IN_MONTH / NBR_DAYS_IN_WEEK; i++) {//4 weeks
-//                for (int j = 0; j < NBR_DAYS_IN_WEEK; j++) {
-//                    schedule[(i * NBR_DAYS_IN_WEEK) + j] = patterns[randomPattern][j];
-//                }
-//            }
-//        }
-//
-//        if (employmentRate == 1) { //full time nurse
-//            for (int i = 0; i < schedule.length; i++) {
-//                if (schedule[i] == 1) {
-//                    int randomIndex = ((int) (Math.random() * shifts.length - 1)) + 1;//min value 1
-//                    schedule[i] = shifts[randomIndex]; //random shift
-//                }
-//            }
-//            for (int i = 0; i < (schedule.length-1); i++) {
-//                if (identicalWeekend) {
-//                    for (int j = 0; j < NBR_DAYS_IN_MONTH / NBR_DAYS_IN_WEEK; j++) {
-//                        if (i == ((NBR_DAYS_IN_WEEK - 2) * j)) {
-//                            schedule[i+1] = schedule[i];
-//                        }
-//                    }
-//                }
-//                while (schedule[i] == 3 && schedule[i+1] == 1) {
-//                    int randomIndex = ((int) (Math.random() * shifts.length - 1)) + 1;
-//                    schedule[i+1] = shifts[randomIndex];
-//                }
-//                while (schedule[i] == 4 && (schedule[i+1] == 1 || schedule[i+1] == 2)) {
-//                    int randomIndex = ((int) (Math.random() * shifts.length - 1)) + 1;
-//                    schedule[i+1] = shifts[randomIndex];
-//                }
-//            }
-//        } else { //NOT a full time nurse
-//            for (int i = 0; i < schedule.length; i++) {
-//                if (schedule[i] == 1) {
-//                    int randomIndex = (int) (Math.random() * shifts.length);
-//                    schedule[i] = shifts[randomIndex]; //random shift
-//                }
-//                if (identicalWeekend == true) {
-//                    for (int j = 0; j < NBR_DAYS_IN_MONTH / NBR_DAYS_IN_WEEK; j++) {
-//                        if (i == ((NBR_DAYS_IN_WEEK - 2) * j)) {
-//                            if (schedule[i] != 0 && schedule[i + 1] != 0) {
-//                                schedule[i + 1] = schedule[i];
-//                            }
-//                        }
-//                    }
-//                }
-//                while (schedule[i] == 3 && schedule[i + 1] == 1) {
-//                    int randomIndex = ((int) (Math.random() * shifts.length - 1)) + 1;
-//                    schedule[i + 1] = shifts[randomIndex];
-//                }
-//                while (schedule[i] == 4 && (schedule[i + 1] == 1 || schedule[i + 1] == 2)) {
-//                    int randomIndex = ((int) (Math.random() * shifts.length - 1)) + 1;
-//                    schedule[i + 1] = shifts[randomIndex];
-//                }
-//            }
-//        }
-//        return schedule;
-//    }
-    //    private NurseSchedule makeRandomSchedule_BasedOnCyclicRoster() {
-//        int[][] schedule = null;
-//        int nbrNursesType1Needed = cyclicRoster.getNbrType1(); //nbrType1 FTE nurses needed
-//        int nbrNursesType2Needed = cyclicRoster.getNbrType2(); //nbrType2 FTE nurses needed
-//        int nbrNursesNeeded = nbrNursesType1Needed + nbrNursesType2Needed; //FTE nbr nurses needed
-//
-//        //ArrayList<Nurse> nursesType1 = personnelCharacteristics.getNurses(NurseType.Type1); //nbrType1 nurses (NOT FTE) available
-//        //ArrayList<Nurse> nursesType2 = personnelCharacteristics.getNurses(NurseType.Type2); //nbrType2 nurses (NOT FTE) available
-//        ArrayList<Nurse> nursesAvailable = personnelCharacteristics.getNurses();
-//        Nurse[] nursesForSchedule = new Nurse[nbrNursesType1Needed + nbrNursesType2Needed];
-//
-//        int random = 0;
-//        Nurse randomNurse;
-//        Nurse newNurse;
-//        //int totalAssignmentsAvailableType1 = 0;
-//        //int totalAssignmentsAvailableType2 = 0;
-//        int totalAssignmentsAvailable = 0; //default
-//        //int totalAssignmentsNeededType1 = nbrNursesType1Needed * Nurse.NBR_ASSIGMENTS_FTE;
-//        //int totalAssignmentsNeededType2 = nbrNursesType2Needed * Nurse.NBR_ASSIGMENTS_FTE;
-//        int totalAssignmentsNeeded = nbrNursesNeeded * Nurse.NBR_ASSIGMENTS_FTE;
-//
-//        try {
-//            for (Nurse nurse : nursesAvailable) {
-//                totalAssignmentsAvailable += nurse.getAssignments();
-//            }
-//
-//            while (totalAssignmentsAvailable < totalAssignmentsNeeded) {
-//                int nbr = (nursesAvailable.size() + 1);
-//                String id = "new nurse nbr " + (nbr / 100 == 0 ? "0" : "") + nbr; //ex. 036 ipv 36
-//
-//                if ((totalAssignmentsNeeded - totalAssignmentsAvailable) > Nurse.NBR_ASSIGMENTS_FTE) {
-//                    newNurse = new Nurse(id, NurseType.Type2);
-//                } else {
-//                    double employmentrate = (double) (totalAssignmentsNeeded - totalAssignmentsAvailable) / Nurse.NBR_ASSIGMENTS_FTE;
-//                    newNurse = new Nurse(id, employmentrate, NurseType.Type2);
-//                }
-//                //UPDATE
-//                totalAssignmentsAvailable += newNurse.getAssignments();
-//                nursesAvailable.add(newNurse);
-//            }
-//
-//            for (int i = 0; i < nbrNursesNeeded; i++) {
-//                random = (int) (Math.random() * nursesAvailable.size());
-//                randomNurse = nursesAvailable.get(random);
-//
-//                newNurse = new Nurse(randomNurse.getId(), randomNurse.getPenaltyPreferenceData(), randomNurse.getEmploymentRate(), randomNurse.getNurseType());
-//                newNurse.setPersonalSchedule(cyclicRoster.getRoster()[i]);//give whole row with shifts to work to the newNurse
-//                nursesForSchedule[i] = newNurse;
-//                nursesAvailable.remove(randomNurse); //to avoid duplicate allocation
-//            }
-//
-//            schedule = new int[nursesForSchedule.length][NBR_DAYS_IN_MONTH];
-//            for (int i = 0; i < nursesForSchedule.length; i++) { //Array with nurses for this schedule
-//                schedule[i] = nursesForSchedule[i].getPersonalSchedule(); //info about every day which shift this nurse need to work
-//            }
-//
-//        } catch (Exception e) {
-//            System.out.println("ERROR: " + e.toString());
-//        }
-//
-//        return new NurseSchedule(scenario, department, minCovReq, nursesForSchedule, schedule);
-//    }
-//    private NurseSchedule calculateBestSchedule_BasedOnSurplusNurses() {
-//        NurseSchedule randomSchedule;
-//        bestSchedule_BasedOnSurplusNurses = makeRandomSchedule();
-//
-//        for (int i = 0; i < NBR_RANDOMRUNS; i++) {
-//            randomSchedule = makeRandomSchedule();
-//            if (randomSchedule.getSurplusCost() < bestSchedule_BasedOnSurplusNurses.getSurplusCost()) {
-//                bestSchedule_BasedOnSurplusNurses = randomSchedule;
-//            }
-//        }
-//        return bestSchedule_BasedOnSurplusNurses;
-//    }
-//    private NurseSchedule calculateBestSchedule_BasedOnFairness() {
-//        NurseSchedule randomSchedule;
-//        bestSchedule_BasedOnFairness = makeRandomSchedule();
-//
-//        for (int i = 0; i < NBR_RANDOMRUNS; i++) {
-//            randomSchedule = makeRandomSchedule();
-//            if (randomSchedule.getFairnessCost() < bestSchedule_BasedOnFairness.getFairnessCost()) {
-//                bestSchedule_BasedOnFairness = randomSchedule;
-//            }
-//        }
-//        return bestSchedule_BasedOnFairness;
-//    }
-//    private NurseSchedule[] makeStartSchedules_BasedOnPreference() {
-//        startSchedules_BasedOnPreference = new NurseSchedule[NBR_SCHEDULES_SAVED];
-//        NurseSchedule randomSchedule;
-//        int indexOfWorstSchedule = -1;
-//
-//        for (int i = 0; i < NBR_RANDOMRUNS; i++) {
-//            if (i < NBR_SCHEDULES_SAVED) {
-//                randomSchedule = makeRandomSchedule_BasedOnPreference();
-//                startSchedules_BasedOnPreference[i] = randomSchedule;
-//            } else {
-//                randomSchedule = makeRandomSchedule_BasedOnPreference();
-//                indexOfWorstSchedule = searchIndexOfMaxPenalty(startSchedules_BasedOnPreference);
-//                if (randomSchedule.getPenaltyPreferenceCost() < startSchedules_BasedOnPreference[indexOfWorstSchedule].getPenaltyPreferenceCost()) {
-//                    startSchedules_BasedOnPreference[indexOfWorstSchedule] = randomSchedule;
-//                }
-//            }
-//
-//        }
-//        Arrays.sort(startSchedules_BasedOnPreference, new Comparator<NurseSchedule>() {
-//
-//            @Override
-//            public int compare(NurseSchedule ns1, NurseSchedule ns2) {
-//                return ns1.getPenaltyPreferenceCost() - ns2.getPenaltyPreferenceCost();
-//            }
-//        });
-//        return startSchedules_BasedOnPreference;
-//    }
-//    private NurseSchedule[] makeStartSchedules_BasedOnMinCovReq() {
-//        NurseSchedule[] startSchedules = new NurseSchedule[NBR_SCHEDULES_SAVED];
-//        NurseSchedule randomSchedule;
-//        int indexOfWorstSchedule = -1;
-//
-//        for (int i = 0; i < NBR_RANDOMRUNS; i++) {
-//            if (i < NBR_SCHEDULES_SAVED) {
-//                randomSchedule = makeRandomSchedule_BasedOnMinCovReq();
-//                startSchedules[i] = randomSchedule;
-//            } else {
-//                randomSchedule = makeRandomSchedule_BasedOnMinCovReq();
-//                indexOfWorstSchedule = searchIndexOfMaxCovReqCost(startSchedules);
-//                if (randomSchedule.getCovReqCost() < startSchedules[indexOfWorstSchedule].getCovReqCost()) {
-//                    startSchedules[indexOfWorstSchedule] = randomSchedule;
-//                }
-//            }
-//        }
-//        Arrays.sort(startSchedules, new Comparator<NurseSchedule>() {
-//
-//            @Override
-//            public int compare(NurseSchedule ns1, NurseSchedule ns2) {
-//                return ns1.getCovReqCost() - ns2.getCovReqCost();
-//            }
-//        });
-//        return startSchedules;
-//    }
-//    
-//    
-//    private NurseSchedule makeRandomSchedule_BasedOnMinCovReq() {
-//        Nurse[] nurses = bestStartSchedule_BasedOnPreference.getNurses();
-//        int[][] schedule_basedOnMinCovReq = null;
-//        
-//        return new NurseSchedule(scenario, department, minCovReq, nurses, schedule_basedOnMinCovReq);
-//    }
-//
-//    private int searchIndexOfMaxPenalty(NurseSchedule[] startSchedules) {
-//        int maxPenalty = 0;
-//        int indexOfMaxPenalty = -1;
-//        int penalty;
-//
-//        for (int i = 0; i < startSchedules.length; i++) {
-//            penalty = startSchedules[i].getPenaltyPreferenceCost();
-//            if (penalty > maxPenalty) {
-//                maxPenalty = penalty;
-//                indexOfMaxPenalty = i;
-//            }
-//        }
-//        return indexOfMaxPenalty;
-//    }
-//
-//    private int searchIndexOfMaxCovReqCost(NurseSchedule[] startSchedules) {
-//        int maxPenalty = 0;
-//        int indexOfMaxPenalty = -1;
-//        int penalty;
-//
-//        for (int i = 0; i < startSchedules.length; i++) {
-//            penalty = startSchedules[i].getCovReqCost();
-//            if (penalty > maxPenalty) {
-//                maxPenalty = penalty;
-//                indexOfMaxPenalty = i;
-//            }
-//        }
-//        return indexOfMaxPenalty;
-//    }
+    
+
     private void calculateMinCovReq(Scenario scenario, char department) {
         int[][] minCovReqAllDep = scenario.getMinCovReq();
         int dep = department - 'A';

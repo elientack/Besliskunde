@@ -16,17 +16,7 @@ public class NurseSchedule implements Comparable<NurseSchedule> {
     public static final int COST_UNSATISFIED_COV_REQ = 100;
     public static final int COST_FAIRNESS = 5;
 
-    //FIXED COSTS FOR NORMALIZATION
-//    public static final int MIN_COST_PREFERENCE = 5;
-//    public static final int MIN_COST_MINCOVREQ = 5;
-//    public static final int MIN_COST_SURPLUSNURSES = 5;
-//    public static final int MIN_COST_FAIRNESS = 5;
-//    public static final int MIN_COST_REALCOSTS = 5;
-//    public static final int MAX_COST_PREFERENCE = 5;
-//    public static final int MAX_COST_MINCOVREQ = 5;
-//    public static final int MAX_COST_SURPLUSNURSES = 5;
-//    public static final int MAX_COST_FAIRNESS = 5;
-//    public static final int MAX_COST_REALCOSTS = 5;    
+   
     private final Scenario scenario;
     private final char department;
     private String name;
